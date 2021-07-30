@@ -87,7 +87,12 @@ ctx_in_hostns(void *ctx __maybe_unused, __net_cookie *cookie)
 
 	if (cookie)
 		*cookie = own_cookie;
-	return own_cookie == get_netns_cookie(NULL);
+	return own_cookie ==
+# ifdef HOST_NETNS_COOKIE
+		HOST_NETNS_COOKIE;
+# else
+		get_netns_cookie(NULL);
+# endif
 #else
 	if (cookie)
 		*cookie = 0;
